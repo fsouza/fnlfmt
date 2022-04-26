@@ -86,7 +86,7 @@ Send patches or bug reports directly to the maintainer or the
 
 ## License
 
-Copyright © 2019-2021 Phil Hagelberg and contributors
+Copyright © 2019-2022 Phil Hagelberg and contributors
 
 Released under the terms of the GNU Lesser General Public License
 version 3 or later; see the file LICENSE.
