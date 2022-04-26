@@ -261,7 +261,7 @@ number of handled arguments."
         (maybe-attach-comment v indent (?. mt :comments :values val)))))
 
 (fn view-multiline-kv [pair-strs indent last-comments]
-  (if (< 0 (length last-comments))
+  (if (and last-comments (< 0 (length last-comments)))
       (do
         (each [_ c (ipairs last-comments)]
           (table.insert pair-strs (tostring c)))
@@ -298,7 +298,7 @@ When f returns a truthy value, recursively walks the children."
 
 (fn set-fennelview-metamethod [idx form parent]
   (when (and (= :table (type form)) (not (fennel.sym? form))
-             (not (fennel.comment? form)) (not= (fennel.varg) form))
+             (not (fennel.comment? form)) (not (fennel.varg? form)))
     (when (and (not (fennel.list? form)) (not (fennel.sequence? form)))
       ;; Fennel's parser will always set the metatable, but we could get tables
       ;; from other places.
