@@ -245,7 +245,8 @@ number of handled arguments."
 (fn maybe-attach-comment [x indent cs]
   (if (and cs (< 0 (length cs)))
       (.. (table.concat (icollect [_ c (ipairs cs)]
-                          (tostring c)) (.. "\n" (string.rep " " indent)))
+                          (tostring c))
+                        (.. "\n" (string.rep " " indent)))
           (.. "\n" (string.rep " " indent)) x)
       x))
 
@@ -266,8 +267,7 @@ number of handled arguments."
         (each [_ c (ipairs last-comments)]
           (table.insert pair-strs (tostring c)))
         (table.insert pair-strs "}")
-        (.. "{" (table.concat pair-strs
-                              (.. "\n" (string.rep " " indent)))))
+        (.. "{" (table.concat pair-strs (.. "\n" (string.rep " " indent)))))
       (.. "{" (table.concat pair-strs (.. "\n" (string.rep " " indent))) "}")))
 
 (fn view-kv [t view inspector indent]
