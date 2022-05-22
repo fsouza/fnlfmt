@@ -1,5 +1,13 @@
 # History of user-visible changes
 
+## 0.2.4 / ???
+
+* ???
+
+## 0.2.3 / 2022-04-26
+
+* Fix a bug around how vargs are handled in Fennel 1.1.0.
+
 ## 0.2.2 / 2021-10-01
 
 * Fix a bug with multiple lines of sequential comments in kv tables.
