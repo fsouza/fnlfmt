@@ -270,13 +270,18 @@ number of handled arguments."
         (.. "{" (table.concat pair-strs (.. "\n" (string.rep " " indent)))))
       (.. "{" (table.concat pair-strs (.. "\n" (string.rep " " indent))) "}")))
 
+(fn sorter [a b]
+  (if (= (type a) (type b))
+      (< a b)
+      (< (tostring a) (tostring b))))
+
 (fn view-kv [t view inspector indent]
   "Normal fennelview table printing is insufficient for two reasons: it doesn't
 know what to do with : foo shorthand notation, and it doesn't emit comments."
   (let [indent (+ indent 1)
         mt (getmetatable t)
         keys (or mt.keys (doto (icollect [k (pairs t)] k)
-                           (table.sort)))
+                           (table.sort sorter)))
         pair-strs (icollect [_ k (ipairs keys)]
                     (view-pair t view inspector indent mt k))
         oneline (.. "{" (table.concat pair-strs " ") "}")]
