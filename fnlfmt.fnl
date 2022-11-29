@@ -275,8 +275,8 @@ number of handled arguments."
 know what to do with : foo shorthand notation, and it doesn't emit comments."
   (let [indent (+ indent 1)
         mt (getmetatable t)
-        keys (or mt.keys (icollect [k (pairs t)]
-                           k))
+        keys (or mt.keys (doto (icollect [k (pairs t)] k)
+                           (table.sort)))
         pair-strs (icollect [_ k (ipairs keys)]
                     (view-pair t view inspector indent mt k))
         oneline (.. "{" (table.concat pair-strs " ") "}")]
