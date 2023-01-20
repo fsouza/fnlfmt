@@ -16,8 +16,8 @@
   (length (line:match "[^\n]*$")))
 
 (fn any? [tbl pred]
-  (not= 0 (length (icollect [_ v (pairs tbl)]
-                    (if (pred v) true)))))
+  (accumulate [found false _ v (pairs tbl) :until found]
+    (not (not (pred v)))))
 
 (fn strip-comments [t]
   (icollect [_ x (ipairs t)]
