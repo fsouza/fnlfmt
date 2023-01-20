@@ -24,7 +24,7 @@
     (when (not (fennel.comment? x))
       x)))
 
-(fn view-fn-args [t view inspector indent start-indent out callee]
+(fn view-fn-args [t view inspector indent start-indent out]
   "Named functions need their name and arglists to be on the first line.
 Returns the index of where the body of the function starts."
   (if (fennel.sym? (. t 2))
@@ -119,7 +119,7 @@ number of handled arguments."
        (<= (+ (or (string.find viewed "\n") (length (viewed:match "[^\n]*$")))
               1 (last-line-length (. out (length out)))) 80)))
 
-(fn trailing-comment? [out viewed body-indent indent]
+(fn trailing-comment? [viewed body-indent]
   (and (viewed:match "^; ") (<= body-indent 80)))
 
 (local one-element-per-line-forms {:-> true
@@ -145,7 +145,7 @@ number of handled arguments."
       (let [viewed (view (. t i) inspector indent)
             body-indent (+ indent 1 (last-line-length (. out (length out))))]
         (if (or (match-same-line? callee i out viewed t)
-                (trailing-comment? out viewed body-indent indent))
+                (trailing-comment? viewed body-indent))
             (do
               (table.insert out " ")
               (table.insert out (view (. t i) inspector body-indent)))
@@ -215,7 +215,7 @@ number of handled arguments."
 
 (local sugars {:hashfn "#" :quote "`" :unquote ","})
 
-(fn sweeten [t view inspector indent view-list]
+(fn sweeten [t view inspector indent]
   (.. (. sugars (tostring (. t 1))) (view (. t 2) inspector (+ indent 1))))
 
 (local maybe-body {:-> true :->> true :-?> true :-?>> true :doto true :if true})
@@ -224,7 +224,7 @@ number of handled arguments."
 
 (fn view-list [t view inspector start-indent]
   (if (. sugars (tostring (. t 1)))
-      (sweeten t view inspector start-indent view-list)
+      (sweeten t view inspector start-indent)
       (let [callee (view (. t 1) inspector (+ start-indent 1))
             callee (or (. renames callee) callee)
             out ["(" callee]
@@ -304,7 +304,7 @@ When f returns a truthy value, recursively walks the children."
   (walk (or custom-iterator pairs) nil nil root)
   root)
 
-(fn set-fennelview-metamethod [idx form parent]
+(fn set-fennelview-metamethod [_idx form]
   (when (and (= :table (type form)) (not (fennel.sym? form))
              (not (fennel.comment? form)) (not (fennel.varg? form)))
     (when (and (not (fennel.list? form)) (not (fennel.sequence? form)))
