@@ -9,6 +9,9 @@
 
 (local syntax (fennel.syntax))
 
+(fn line [ast]
+  (. (fennel.ast-source ast) :line))
+
 (fn last-line-length [line]
   (length (line:match "[^\n]*$")))
 
@@ -195,14 +198,14 @@ number of handled arguments."
                                  (+ i 3)
                                  (+ i 2)) view)))
 
-(fn originally-different-lines? [[_ first second] line]
+(fn originally-different-lines? [[_ first second] top-line]
   (and (= :table (type first)) (= :table (type second))
-       (not= line (or first.line line) (or second.line line))))
+       (not= top-line (or (line first) top-line) (or (line second) top-line))))
 
 (fn view-maybe-body [t view inspector indent start-indent out callee]
   (if (pairwise-if? t indent 2 view)
       (view-pairwise-if t view inspector indent out)
-      (originally-different-lines? t t.line)
+      (originally-different-lines? t (line t))
       (view-body t view inspector (+ start-indent 2) out callee)
       (view-call t view inspector indent out callee)))
 
@@ -335,7 +338,7 @@ When f returns a truthy value, recursively walks the children."
 
 (fn space-out-forms? [prev-ast ast]
   "Use previous line numbering to determine whether to space out forms."
-  (not (and prev-ast.line ast.line (= 1 (- ast.line prev-ast.line)))))
+  (not (and (line prev-ast) (line ast) (= 1 (- (line ast) (line prev-ast))))))
 
 (fn format-file [filename {: no-comments}]
   "Read source from a file and return formatted source."
