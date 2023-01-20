@@ -22,7 +22,9 @@ has a newline in it"
     3)
 
 (fn pp-string [str options indent]
-  (let [escs (setmetatable {"\a" "\\a"
+  (let [escape? (and options.escape-newlines?
+                     (< (length str) (- options.line-length indent)))
+        escs (setmetatable {"\a" "\\a"
                             "\b" "\\b"
                             "\f" "\\f"
                             "\v" "\\v"
@@ -30,9 +32,6 @@ has a newline in it"
                             "\t" "\\t"
                             "\\" "\\\\"
                             "\"" "\\\""
-                            "\n" (if (and options.escape-newlines?
-                                          (< (length str)
-                                             (- options.line-length indent)))
-                                     "\\n" "\n")}
+                            "\n" (if escape? "\\n" "\n")}
                            {:__index #(: "\\%03d" :format ($2:byte))})]
     (.. "\"" (str:gsub "[%c\\\"]" escs) "\"")))

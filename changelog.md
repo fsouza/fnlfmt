@@ -2,7 +2,8 @@
 
 ## 0.2.4 / ???
 
-* ???
+* Allow certain forms to preserve one-liner status.
+* Fix a bug where table keys weren't always sorted.
 
 ## 0.2.3 / 2022-04-26
 

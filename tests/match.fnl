@@ -31,3 +31,8 @@
     (if return-string?
         out
         (print (pick-values 1 (string.gsub out "\n$" ""))))))
+
+(match (type lines)
+  :string lines
+  :table (concat-lines lines options indent force-multi-line?)
+  _ (error "__fennelview metamethod must return a table of lines"))

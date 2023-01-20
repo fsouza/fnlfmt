@@ -2,6 +2,7 @@
 (local cases [:top
               :table
               :call
+              :comprehension
               :body
               :misc
               :semicolon
@@ -23,13 +24,13 @@
 
 (local failures [])
 
-(fn failed [name after actual]
+(fn failed [name filename actual]
   (table.insert failures name)
   (print :FAIL name)
-  (print "Expected:")
-  (print after)
-  (print "Got:")
-  (print actual))
+  (let [p (io.popen (string.format "diff -u %s -" filename) :w)]
+    (p:write actual)
+    (p:close))
+  (print "\n"))
 
 (each [_ name (ipairs (if (< 0 (length arg))
                           arg
@@ -39,7 +40,7 @@
         actual (fmt.format-file filename {})]
     (if (= actual expected)
         (set pass (+ pass 1))
-        (failed name expected actual))))
+        (failed name filename actual))))
 
 (print (: "%s passed, %s failed" :format pass (length failures)))
 (when (not= 0 (length failures))

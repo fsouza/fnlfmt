@@ -133,6 +133,29 @@ number of handled arguments."
   (and (not (= start-index i))
        (or (prev:match "^ *%(fn [^%[]") (viewed:match "^ *%(fn [^%[]"))))
 
+(fn originally-same-lines? [t n1 n2]
+  (let [first (. t n1)
+        second (. t n2)]
+    (and (= :table (type second)) (= (line t) (line first) (line second)))))
+
+(fn scalar? [form]
+  (or (fennel.sym? form) (fennel.comment? form) (fennel.varg? form)
+      (not= :table (type form))))
+
+(fn depth [form base]
+  (if (scalar? form)
+      base
+      (accumulate [d (+ base 1) _ elem (pairs form)]
+        (math.max d (depth elem (+ base 1))))))
+
+(fn preserve-same-line? [t i indent out viewed depth]
+  (and (<= depth 3)
+       (<= (+ indent (length (table.concat out)) (length viewed)) 80)
+       ;; most one-liners can be preserved by originally-same-lines, but forms
+       ;; with metaless contents (strings/numbers) can't, so we special-case
+       (or (and (not= :table (type (. t i))) (<= (length t) 4))
+           (and (originally-same-lines? t 1 i) (not (viewed:find "\n"))))))
+
 (fn view-body [t view inspector start-indent out callee]
   "Insert arguments to a call to a special that takes body arguments."
   (let [start-index (view-init-body t view inspector start-indent out callee)
@@ -145,6 +168,7 @@ number of handled arguments."
       (let [viewed (view (. t i) inspector indent)
             body-indent (+ indent 1 (last-line-length (. out (length out))))]
         (if (or (match-same-line? callee i out viewed t)
+                (preserve-same-line? t i indent out viewed (depth t 0))
                 (trailing-comment? viewed body-indent))
             (do
               (table.insert out " ")
@@ -198,14 +222,10 @@ number of handled arguments."
                                  (+ i 3)
                                  (+ i 2)) view)))
 
-(fn originally-different-lines? [[_ first second] top-line]
-  (and (= :table (type first)) (= :table (type second))
-       (not= top-line (or (line first) top-line) (or (line second) top-line))))
-
 (fn view-maybe-body [t view inspector indent start-indent out callee]
   (if (pairwise-if? t indent 2 view)
       (view-pairwise-if t view inspector indent out)
-      (originally-different-lines? t (line t))
+      (not (originally-same-lines? t 2 3))
       (view-body t view inspector (+ start-indent 2) out callee)
       (view-call t view inspector indent out callee)))
 
@@ -305,8 +325,7 @@ When f returns a truthy value, recursively walks the children."
   root)
 
 (fn set-fennelview-metamethod [_idx form]
-  (when (and (= :table (type form)) (not (fennel.sym? form))
-             (not (fennel.comment? form)) (not (fennel.varg? form)))
+  (when (not (scalar? form))
     (when (and (not (fennel.list? form)) (not (fennel.sequence? form)))
       ;; Fennel's parser will always set the metatable, but we could get tables
       ;; from other places.

@@ -2,7 +2,7 @@
 
 (local second (do
                 (print :abc)
-                11))
+                (print 11)))
 
 (define-arithmetic-special 1)
 (define-arithmetic-special 2)
@@ -16,15 +16,12 @@
 (local slength (or (-?> (rawget _G :utf8) (. :len)) #(length $)))
 
 (fn abc []
-  (fn xyz []
-    123)
+  (fn xyz [] 123)
 
-  (fn def []
-    456)
+  (fn def [] 456)
 
   (.. (xyz) (def))
-  (fn []
-    :return-a-function))
+  (fn [] :return-a-function))
 
 (fn abc2 []
   "this function returns abc"

@@ -52,6 +52,11 @@ Forms calling `match` and `if` are treated differently; if possible it
 will attempt to pair off their pattern/condition clauses with the body
 on the same line. If that can't fit, it falls back to one-form-per-line.
 
+Certain forms which have a body are sometimes allowed to keep their
+body on the same line as the call, if the original code has it that
+way, provided the body doesn't nest more than one level and fits in
+the line length limit.
+
 Strings are formatted using `:colon-notation` where possible, unless
 they consist entirely of punctuation.
 
@@ -64,6 +69,7 @@ be one line if the original code had them as one-liners.
 
 ## Known issues
 
+* Numbers are always emitted as decimal; hex notation is not preserved.
 * When using fnlfmt programmatically, it may modify the AST argument.
 * Macros that aren't built-in are always indented like functions.
 * Page breaks will not be preserved.
