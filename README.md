@@ -22,7 +22,7 @@ before them. This does not work for nested forms.
                    "because of"        :reasons])
 
 (fn this-function [will-be]
-  (formatted :normally "again"))
+  (formatted :normally "again, haha"))
 ```
 
 ## Description
@@ -54,7 +54,7 @@ on the same line. If that can't fit, it falls back to one-form-per-line.
 
 Certain forms which have a body are sometimes allowed to keep their
 body on the same line as the call, if the original code has it that
-way, provided the body doesn't nest more than one level and fits in
+way, provided the body doesn't nest more than two levels and fits in
 the line length limit.
 
 Strings are formatted using `:colon-notation` where possible, unless
@@ -66,6 +66,10 @@ body form get empty lines spacing them out as well.
 
 Similarly `if` forms and arrow forms will occasionally be allowed to
 be one line if the original code had them as one-liners.
+
+By design there is no way to configure it; the indentation should be
+considered canonical other than bugs or when new features are added to
+Fennel itself.
 
 ## Known issues
 
@@ -99,7 +103,7 @@ Send patches or bug reports directly to the maintainer or the
 
 ## License
 
-Copyright © 2019-2022 Phil Hagelberg and contributors
+Copyright © 2019-2023 Phil Hagelberg and contributors
 
 Released under the terms of the GNU Lesser General Public License
 version 3 or later; see the file LICENSE.

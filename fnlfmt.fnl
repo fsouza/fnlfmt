@@ -16,7 +16,8 @@
   (length (line:match "[^\n]*$")))
 
 (fn any? [tbl pred]
-  (accumulate [found false _ v (pairs tbl) :until found]
+  (accumulate [found false _ v (pairs tbl)
+               :until found]
     (not (not (pred v)))))
 
 (fn strip-comments [t]
@@ -45,11 +46,19 @@ Returns the index of where the body of the function starts."
   (let [last (or (. out (length out)) "")]
     (not (: (last:match "[^\n]*$") :match "[^ ]"))))
 
-(fn break-pair? [pair-wise? count viewed next-ast indent]
-  (and pair-wise? (= 1 (math.fmod count 2))
-       (not (and (fennel.comment? next-ast) ; does the trailing comment fit?
-                 (<= (+ indent 1 (last-line-length viewed) 1
-                        (length (tostring next-ast))) 80)))))
+(fn break-pair? [let? count viewed next-ast next-next indent iterator?]
+  (if let?
+      (and (= 1 (math.fmod count 2))
+           (not (and (fennel.comment? next-ast)
+                     ; does the trailing comment fit?
+                     (<= (+ indent 1 (last-line-length viewed) 1
+                            (length (tostring next-ast)))
+                         80))))
+      ;; if it's not a let, it's probably an iterator binding
+      (and (or (= :string (type next-ast)) (: (tostring next-ast) :find "^&"))
+           (< 80 (+ indent 1 (last-line-length viewed) 1
+                    (length (tostring next-ast))
+                    (length (fennel.view next-next)))))))
 
 (fn binding-comment [c indent out start-indent]
   (when (and (< 80 (+ indent (length (tostring c))))
@@ -78,7 +87,7 @@ We want everything to be on one line as much as possible, (except for let)."
           (set non-comment-count (+ non-comment-count 1))
           (when (< i (length bindings))
             (if (break-pair? pair-wise? non-comment-count viewed
-                             (. bindings (+ i 1)) indent)
+                             (. bindings (+ i 1)) (. bindings (+ i 2)) indent)
                 (do
                   (table.insert out (.. "\n" (string.rep " " start-indent)))
                   (set indent start-indent))
