@@ -69,8 +69,15 @@ be one line if the original code had them as one-liners.
 
 ## Known issues
 
+* Comments will not be wrapped.
+* When using fnlfmt as a library, it may modify the AST argument.
+* Function argument lists will be displayed one-per-line if they can't
+  all fit on one line. (This is inherited from `fennel.view`.)
+
+Some of the issues are inherent to this approach, or at least cannot
+be fixed without major changes:
+
 * Numbers are always emitted as decimal; hex notation is not preserved.
-* When using fnlfmt programmatically, it may modify the AST argument.
 * Macros that aren't built-in are always indented like functions.
 * Page breaks will not be preserved.
 

@@ -101,6 +101,8 @@ number of handled arguments."
   (let [indent (if (. force-initial-newline callee)
                    start-indent
                    (+ start-indent (length callee)))
+        ;; the handling of function args is very messy; sometimes they are
+        ;; handled here and sometimes they're down in view-fn-args; kinda bad.
         second (if (and (?. syntax callee :binding-form?)
                         (not= :unquote (tostring (. t 2 1))))
                    (view-binding (. t 2) view inspector (+ indent 1)
@@ -149,8 +151,8 @@ number of handled arguments."
         (math.max d (depth elem (+ base 1))))))
 
 (fn preserve-same-line? [t i indent out viewed depth]
-  (and (<= depth 3)
-       (<= (+ indent (length (table.concat out)) (length viewed)) 80)
+  (and (<= (+ indent (length (table.concat out)) (length viewed)) 80)
+       (<= depth 3)
        ;; most one-liners can be preserved by originally-same-lines, but forms
        ;; with metaless contents (strings/numbers) can't, so we special-case
        (or (and (not= :table (type (. t i))) (<= (length t) 4))
