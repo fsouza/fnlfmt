@@ -3767,6 +3767,8 @@ package.preload["fennel.parser"] = package.preload["fennel.parser"] or function(
       local function next_noncomment(tbl, i)
         if utils["comment?"](tbl[i]) then
           return next_noncomment(tbl, (i + 1))
+        elseif (utils.sym(":") == tbl[i]) then
+          return tostring(tbl[(i + 1)])
         else
           return tbl[i]
         end

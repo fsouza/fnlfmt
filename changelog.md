@@ -2,6 +2,7 @@
 
 ## 0.2.4 / ???
 
+* Fix a bug where comments in k/v tables could disappear.
 * Allow certain forms to preserve one-liner status.
 * Fix a bug where table keys weren't always sorted.
 

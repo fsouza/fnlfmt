@@ -3503,7 +3503,7 @@ package.preload["fennel.compiler"] = package.preload["fennel.compiler"] or funct
   end
   local function traceback(_3fmsg, _3fstart)
     local msg = tostring((_3fmsg or ""))
-    if ((msg:find("^(%./)?%g+:%d+:%d+ Compile error:.*") or msg:find("^(%./)?%g+:%d+:%d+ Parse error:.*")) and not utils["debug-on?"]("trace")) then
+    if ((msg:find("^%g+:%d+:%d+ Compile error:.*") or msg:find("^%g+:%d+:%d+ Parse error:.*")) and not utils["debug-on?"]("trace")) then
       return msg
     else
       local lines = {}
@@ -3981,6 +3981,8 @@ package.preload["fennel.parser"] = package.preload["fennel.parser"] or function(
       local function next_noncomment(tbl, i)
         if utils["comment?"](tbl[i]) then
           return next_noncomment(tbl, (i + 1))
+        elseif (utils.sym(":") == tbl[i]) then
+          return tostring(tbl[(i + 1)])
         else
           return tbl[i]
         end

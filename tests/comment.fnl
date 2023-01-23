@@ -22,6 +22,10 @@
                    start-indent)]
     12))
 
+(local mod {:abc def
+            ; running
+            : xyz})
+
 (print {:this table
         ;; has a comment
         ;; with multiple lines in it!!!
