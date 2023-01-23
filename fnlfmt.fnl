@@ -106,6 +106,7 @@ We want everything to be on one line as much as possible, (except for let)."
 number of handled arguments."
   (if (. force-initial-newline callee)
       (table.insert out (.. "\n" (string.rep " " start-indent)))
+      (not= nil (. t 2))
       (table.insert out " "))
   (let [indent (if (. force-initial-newline callee)
                    start-indent
@@ -253,17 +254,22 @@ number of handled arguments."
 
 (local renames {"#" :length "~=" :not=})
 
+(fn body-form? [callee]
+  (or (?. syntax callee :body-form?)
+      (callee:find "%.with-") (callee:find "^with-")
+      (callee:find "%.def") (callee:find "^def")))
+
 (fn view-list [t view inspector start-indent]
   (if (. sugars (tostring (. t 1)))
       (sweeten t view inspector start-indent)
       (let [callee (view (. t 1) inspector (+ start-indent 1))
             callee (or (. renames callee) callee)
             out ["(" callee]
-            indent (if (?. syntax callee :body-form?)
+            indent (if (body-form? callee)
                        (+ start-indent 2)
                        (+ start-indent (length callee) 2))]
         ;; indent differently if it's calling a special form with body args
-        (if (?. syntax callee :body-form?)
+        (if (body-form? callee)
             (view-body t view inspector indent out callee)
             ;; in some cases we treat it differently depending on whether the
             ;; original code was multi-line or not

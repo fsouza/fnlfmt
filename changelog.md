@@ -1,7 +1,8 @@
 # History of user-visible changes
 
-## 0.2.4 / ???
+## 0.3.0 / ???
 
+* Treat `with-*` and `def*` forms as macros with a body.
 * Improved handling of `&into` and `&until` in iterator bindings.
 * Fix a bug where comments in k/v tables could disappear.
 * Allow certain forms to preserve one-liner status.

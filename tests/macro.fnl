@@ -11,7 +11,7 @@ encountering an error before propagating it."
                       abc
                       (error ... 0)))
         traceback `(. (or package.loaded.fennel debug) :traceback)
-        out [`(if ) `(fn )]]
+        out [`(if) `(fn)]]
     (for [i 1 (length closable-bindings) 2]
       (assert (sym? (. closable-bindings i))
               "with-open only allows symbols in bindings")

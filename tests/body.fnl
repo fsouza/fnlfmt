@@ -35,3 +35,9 @@ has a newline in it"
                             "\n" (if escape? "\\n" "\n")}
                            {:__index #(: "\\%03d" :format ($2:byte))})]
     (.. "\"" (str:gsub "[%c\\\"]" escs) "\"")))
+
+(deftest ensure-blobbo
+  (t.is (= 33 b.lob)))
+
+(m.with-connection [socket-connection "https://fennel-lang.org/see?abc=foo"]
+  (socket-connection:read-all))
