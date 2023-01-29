@@ -16,8 +16,7 @@
   (length (line:match "[^\n]*$")))
 
 (fn any? [tbl pred]
-  (accumulate [found false _ v (pairs tbl)
-               :until found]
+  (accumulate [found false _ v (pairs tbl) :until found]
     (not (not (pred v)))))
 
 (fn strip-comments [t]
@@ -255,9 +254,8 @@ number of handled arguments."
 (local renames {"#" :length "~=" :not=})
 
 (fn body-form? [callee]
-  (or (?. syntax callee :body-form?)
-      (callee:find "%.with-") (callee:find "^with-")
-      (callee:find "%.def") (callee:find "^def")))
+  (or (?. syntax callee :body-form?) (callee:find "%.with-")
+      (callee:find :^with-) (callee:find "%.def") (callee:find :^def)))
 
 (fn view-list [t view inspector start-indent]
   (if (. sugars (tostring (. t 1)))
