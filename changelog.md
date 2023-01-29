@@ -1,6 +1,6 @@
 # History of user-visible changes
 
-## 0.3.0 / ???
+## 0.3.0 / 2023-01-29
 
 * Treat `with-*` and `def*` forms as macros with a body.
 * Improved handling of `&into` and `&until` in iterator bindings.
