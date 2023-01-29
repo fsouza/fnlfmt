@@ -4,7 +4,7 @@ Format your Fennel!
 
 ## Usage
 
-    $ make # compile fnlfmt script you can place on your $PATH
+    $ make install $PREFIX=$HOME # or sudo make install in /usr/local
     $ ./fnlfmt mycode.fnl # prints formatted code to standard out
     $ ./fnlfmt --fix mycode.fnl # replaces the file with formatted code
     $ curl localhost:8080/my-file.fnl | ./fnlfmt - # pipe to stdin
@@ -84,6 +84,9 @@ be fixed without major changes:
 * Numbers are always emitted as decimal; hex notation is not preserved.
 * Macros that aren't built-in are always indented like functions.
 * Page breaks will not be preserved.
+* Macros that take a body argument but aren't built-in will only be indented
+  correctly if their name starts with `with-` or `def`. Functions which
+  use this naming convention will be indented as if they were macros.
 
 ## Other functionality
 

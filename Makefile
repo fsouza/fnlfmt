@@ -1,5 +1,11 @@
+LUA ?= lua
+
+DESTDIR ?=
+PREFIX ?= /usr/local
+BIN_DIR ?= $(PREFIX)/bin
+
 fnlfmt: cli.fnl fnlfmt.fnl
-	echo "#!/usr/bin/env lua" > $@
+	echo "#!/usr/bin/env $(LUA)" > $@
 	./fennel --require-as-include --compile $< >> $@
 	chmod +x $@
 
@@ -18,4 +24,7 @@ count: ; cloc fnlfmt.fnl
 clean: ; rm fnlfmt
 lint: ; ./fennel --plugin ../fennel/src/linter.fnl -c fnlfmt.fnl > /dev/null
 
-.PHONY: selfhost test count roundtrip clean lint
+install: fnlfmt
+	mkdir -p $(DESTDIR)$(BIN_DIR) && cp $< $(DESTDIR)$(BIN_DIR)/
+
+.PHONY: selfhost test count roundtrip clean lint install
