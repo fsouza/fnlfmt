@@ -374,11 +374,15 @@ When f returns a truthy value, recursively walks the children."
   "Use previous line numbering to determine whether to space out forms."
   (not (and (line prev-ast) (line ast) (= 1 (- (line ast) (line prev-ast))))))
 
+(fn abort [filename]
+  (io.stderr:write (string.format "File not found: %s\n" filename))
+  (os.exit 1))
+
 (fn format-file [filename {: no-comments}]
   "Read source from a file and return formatted source."
   (let [f (match filename
             "-" io.stdin
-            _ (assert (io.open filename :r) "File not found."))
+            _ (or (io.open filename :r) (abort filename)))
         contents (f:read :*all)
         parser (-> (fennel.stringStream contents)
                    (fennel.parser filename {:comments (not no-comments)}))
