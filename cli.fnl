@@ -22,5 +22,6 @@
                               f (assert (io.open filename :w))]
                           (f:write new)
                           (f:close))
+  (where (or [:--help] [:-?] [:-h])) (help)
   [filename nil] (print (format-file filename options))
   _ (help))
