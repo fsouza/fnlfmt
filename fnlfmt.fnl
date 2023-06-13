@@ -124,9 +124,12 @@ number of handled arguments."
         (view-fn-args t view inspector indent2 start-indent out callee)
         3)))
 
+(fn match? [callee]
+  (. {:match true :case true :match-try true :case-try true} callee))
+
 (fn match-same-line? [callee i out viewed t]
   ;; just don't even try if there's comments!
-  (and (= :match callee) (= 0 (math.fmod i 2)) (not (any? t fennel.comment?))
+  (and (match? callee) (= 0 (math.fmod i 2)) (not (any? t fennel.comment?))
        (<= (+ (or (string.find viewed "\n") (length (viewed:match "[^\n]*$")))
               1 (last-line-length (. out (length out)))) 80)))
 

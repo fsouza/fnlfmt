@@ -32,7 +32,15 @@
         out
         (print (pick-values 1 (string.gsub out "\n$" ""))))))
 
-(match (type lines)
+(case (type lines)
   :string lines
   :table (concat-lines lines options indent force-multi-line?)
   _ (error "__fennelview metamethod must return a table of lines"))
+
+(match-try (channel.get-or-make state cstate channel-name)
+  ch (ch.allowed? cstate.nick (if (= ?key "") nil ?key))
+  true (ch.join cstate.nick cstate.conn)
+  _ (tset state.channels channel-name ch)
+  (catch (_ cmd msg) (state:send cstate cmd msg)))
+
+;; TODO: should be a newline here after catch
