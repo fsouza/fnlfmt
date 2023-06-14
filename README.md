@@ -4,7 +4,7 @@ Format your Fennel!
 
 ## Usage
 
-    $ make install $PREFIX=$HOME # or sudo make install in /usr/local
+    $ make install PREFIX=$HOME # or sudo make install in /usr/local
     $ ./fnlfmt mycode.fnl # prints formatted code to standard out
     $ ./fnlfmt --fix mycode.fnl # replaces the file with formatted code
     $ curl localhost:8080/my-file.fnl | ./fnlfmt - # pipe to stdin
