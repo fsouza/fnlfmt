@@ -82,8 +82,7 @@ Some of the issues are inherent to this approach, or at least cannot
 be fixed without major changes:
 
 * Numbers are always emitted as decimal; hex notation is not preserved.
-* Macros that aren't built-in are always indented like functions.
-* Page breaks will not be preserved.
+* Page breaks and other whitespace will not be preserved.
 * Macros that take a body argument but aren't built-in will only be indented
   correctly if their name starts with `with-` or `def`. Functions which
   use this naming convention will be indented as if they were macros.

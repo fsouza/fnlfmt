@@ -1,5 +1,10 @@
 # History of user-visible changes
 
+## 0.3.1 / ???
+
+* Fix a bug with comment nodes not having newlines after.
+* Support for `case`, `case-try`, and `match-try`.
+
 ## 0.3.0 / 2023-01-29
 
 * Treat `with-*` and `def*` forms as macros with a body.

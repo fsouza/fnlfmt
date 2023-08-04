@@ -165,6 +165,7 @@ number of handled arguments."
 (fn preserve-same-line? [t i indent out viewed depth]
   (and (<= (+ indent (length (table.concat out)) (length viewed)) 80)
        (<= depth 3)
+       (not (fennel.comment? (. t (- i 1))))
        ;; most one-liners can be preserved by originally-same-lines, but forms
        ;; with metaless contents (strings/numbers) can't, so we special-case
        (or (and (not= :table (type (. t i))) (<= (length t) 4))
