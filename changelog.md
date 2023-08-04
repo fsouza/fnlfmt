@@ -2,6 +2,7 @@
 
 ## 0.3.1 / ???
 
+* Relicense to MIT.
 * Fix a bug with comment nodes not having newlines after.
 * Support for `case`, `case-try`, and `match-try`.
 

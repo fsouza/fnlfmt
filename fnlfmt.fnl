@@ -1,11 +1,18 @@
-(local fennel (require :fennel))
-(local unpack (or table.unpack _G.unpack))
+;;; fnlfmt.fnl --- The Fennel Formatter
+
+;; https://git.sr.ht/~technomancy/fnlfmt
+
+;; SPDX-License-Identifier: MIT
+;; SPDX-FileCopyrightText: Phil Hagelberg and contributors
 
 ;; The basic idea is to run the code thru the parser, set a few overrides on the
 ;; __fennelview metamethods of the AST, then run it thru the fennel.view
 ;; pretty-printer. The bulk of this file consists of metamethods for lists and
 ;; tables which improve on fennel.view's existing logic of how to indent and
 ;; where to place newlines.
+
+(local fennel (require :fennel))
+(local unpack (or table.unpack _G.unpack))
 
 (local syntax (fennel.syntax))
 

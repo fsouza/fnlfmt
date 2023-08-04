@@ -107,7 +107,4 @@ Send patches or bug reports directly to the maintainer or the
 
 Copyright © 2019-2023 Phil Hagelberg and contributors
 
-Released under the terms of the GNU Lesser General Public License
-version 3 or later; see the file LICENSE.
-
-Fennel is released under the MIT license; see LICENSE.MIT.
+Released under the MIT license; see LICENSE.
