@@ -1,6 +1,6 @@
 # History of user-visible changes
 
-## 0.3.1 / ???
+## 0.3.1 / 2023-08-03
 
 * Relicense to MIT.
 * Fix a bug with comment nodes not having newlines after.
