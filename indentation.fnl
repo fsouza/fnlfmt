@@ -68,15 +68,22 @@ should continue looking to previous lines."
                       "λ" true
                       :when true
                       :eval-compiler true
+                      :comment true
                       :for true
                       :each true
                       :while true
                       :macro true
+                      :case true
+                      :case-try try
                       :match true
+                      :match-try true
                       :doto true
                       :with-open true
                       :collect true
-                      :icollect true})
+                      :icollect true
+                      :fcollect true
+                      :accumulate true
+                      :faccumulate true})
 
 (fn remove-comment [line in-string? pos]
   (if (< (length line) pos)
