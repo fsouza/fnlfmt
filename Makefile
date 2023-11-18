@@ -27,4 +27,7 @@ lint: ; ./fennel --plugin ../fennel/src/linter.fnl -c fnlfmt.fnl > /dev/null
 install: fnlfmt
 	mkdir -p $(DESTDIR)$(BIN_DIR) && cp $< $(DESTDIR)$(BIN_DIR)/
 
+uninstall:
+	rm -f $(DESTDIR)$(BIN_DIR)/fnlfmt
+
 .PHONY: selfhost test count roundtrip clean lint install
