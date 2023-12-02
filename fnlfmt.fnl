@@ -52,7 +52,7 @@ Returns the index of where the body of the function starts."
   (let [last (or (. out (length out)) "")]
     (not (: (last:match "[^\n]*$") :match "[^ ]"))))
 
-(fn break-pair? [let? count viewed next-ast next-next indent iterator?]
+(fn break-pair? [let? count viewed next-ast next-next indent]
   (if let?
       (and (= 1 (math.fmod count 2))
            (not (and (fennel.comment? next-ast)
@@ -420,4 +420,4 @@ When f returns a truthy value, recursively walks the children."
     (table.insert out "")
     (table.concat out "\n")))
 
-{: fnlfmt : format-file :version :0.3.1}
+{: fnlfmt : format-file :version :0.3.2-dev}

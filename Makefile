@@ -4,7 +4,8 @@ DESTDIR ?=
 PREFIX ?= /usr/local
 BIN_DIR ?= $(PREFIX)/bin
 
-fnlfmt: cli.fnl fnlfmt.fnl
+SRC=cli.fnl fnlfmt.fnl
+fnlfmt: $(SRC)
 	echo "#!/usr/bin/env $(LUA)" > $@
 	./fennel --require-as-include --compile $< >> $@
 	chmod +x $@
@@ -30,4 +31,7 @@ install: fnlfmt
 uninstall:
 	rm -f $(DESTDIR)$(BIN_DIR)/fnlfmt
 
-.PHONY: selfhost test count roundtrip clean lint install
+check:
+	fennel-ls --check $(SRC) indentation.fnl
+
+.PHONY: selfhost test count roundtrip clean lint install check

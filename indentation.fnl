@@ -74,7 +74,7 @@ should continue looking to previous lines."
                       :while true
                       :macro true
                       :case true
-                      :case-try try
+                      :case-try true
                       :match true
                       :match-try true
                       :doto true
