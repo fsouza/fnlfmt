@@ -23,5 +23,5 @@
                           (f:write new)
                           (f:close))
   (where (or [:--help] [:-?] [:-h])) (help)
-  [filename nil] (print (format-file filename options))
+  [filename nil] (io.stdout:write (format-file filename options))
   _ (help))
